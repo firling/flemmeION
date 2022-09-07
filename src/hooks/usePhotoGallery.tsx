@@ -7,6 +7,8 @@ export function usePhotoGallery() {
         source: CameraSource.Camera,
         quality: 100,
       });
+
+      return photo;
     };
   
     return {
