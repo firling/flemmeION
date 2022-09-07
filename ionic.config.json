@@ -1,0 +1,7 @@
+{
+  "name": "flemmeION",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
