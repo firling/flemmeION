@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import { GlobalContext } from '../../context/GlobalState';
+import { Clipboard } from '@capacitor/clipboard';
+import { Toast } from '@capacitor/toast';
 
 interface Scan {
   id: number;
@@ -32,8 +34,18 @@ const Element: React.FC = () => {
     if (res.data.success) {
         console.log(res.data)
         delScan(res.data.scan.id)
-        history.goBack();
+        history.push('/')
     }
+  }
+
+  const copy = async () => {
+    await Clipboard.write({
+        string: scan?.text
+    });
+
+    await Toast.show({
+        text: 'Copier dans le press papier !'
+    })
   }
 
   return (
@@ -56,6 +68,9 @@ const Element: React.FC = () => {
             </div>
 
             <IonFab vertical="bottom" horizontal="center" slot="fixed">
+                <IonFabButton class="ion-margin-bottom" onClick={copy}>
+                    <IonText>Copy</IonText>          
+                </IonFabButton>
                 <IonFabButton color="danger" class="ion-margin-bottom" onClick={delElement}>
                     <IonText>Del</IonText>          
                 </IonFabButton>

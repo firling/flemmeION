@@ -10,6 +10,7 @@ import axios from 'axios';
 
 import './Scan.css';
 import { GlobalContext } from '../../context/GlobalState';
+import { useHistory } from 'react-router';
 
 const headers = {
   'Content-Type': 'application/octet-stream',
@@ -18,9 +19,12 @@ const headers = {
 
 const Scan: React.FC = () => {
   const [img, setImg] = useState<Photo | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [LoadingMSG, setLoadingMSG] = useState("Scanning ....");
   const [text, setText] = useState("");
   const { takePhoto } = usePhotoGallery();
+
+  const history = useHistory();
   
   const { addScan } = useContext(GlobalContext)
 
@@ -32,6 +36,7 @@ const Scan: React.FC = () => {
 
   const scan = async () => {
     setLoading(true);
+    setLoadingMSG("Scanning ....")
     const rawData = await fetch(`data:image/jpeg;base64,${img?.base64String!}`)
     const imgData = await rawData.blob();
     const res = await axios.post('https://flemme.cognitiveservices.azure.com/vision/v3.2/ocr?language=fr&detectOrientation=true&model-version=latest', imgData, {headers})
@@ -54,6 +59,8 @@ const Scan: React.FC = () => {
   }
 
   const save = async () => {
+    setLoading(true);
+    setLoadingMSG("Enregistrement ....")
     const data = {
       image: img?.base64String,
       format: img?.format,
@@ -63,7 +70,9 @@ const Scan: React.FC = () => {
     const res = await axios.post('http://localhost:3333/api/scan/create', data);
     if (res.data.success) {
       addScan(res.data.post)
+      history.push('/')
     }
+    setLoading(false);
   }
 
   return (
@@ -85,7 +94,7 @@ const Scan: React.FC = () => {
         }
         <IonLoading
           isOpen={loading}
-          message={'Scanning...'}
+          message={LoadingMSG}
         />
         <IonFab vertical="bottom" horizontal="center" slot="fixed">
           {
