@@ -27,7 +27,7 @@ const Element: React.FC = () => {
       setScan(res.data.scan)
     }
     getData()
-  }, [])
+  }, [id])
 
   const delElement = async () => {
     const res = await axios.delete(`${process.env.REACT_APP_BACK_URL}/api/scan/delete/${id}`)
