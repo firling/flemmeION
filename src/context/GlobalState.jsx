@@ -36,7 +36,7 @@ export const GlobalProvider = ({children}) => {
     }
 
     const getScans = async () => {
-        const res = await axios.get('http://localhost:3333/api/scan')
+        const res = await axios.get(`${process.env.REACT_APP_BACK_URL}/api/scan`)
         setScans(res.data.scans)
     }
 

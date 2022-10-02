@@ -14,7 +14,7 @@ interface Props {
 const ScanElement: React.FC<Props> = ({scan}) => {
     return (
         <Link to={`element/${scan.id}`}>
-            <img className="scan-element" src={`http://localhost:3333/images/${scan.image}`} />
+            <img className="scan-element" src={`${process.env.REACT_APP_BACK_URL}/images/${scan.image}`} />
         </Link>
     );
 };

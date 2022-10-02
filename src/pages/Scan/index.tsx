@@ -39,23 +39,28 @@ const Scan: React.FC = () => {
     setLoadingMSG("Scanning ....")
     const rawData = await fetch(`data:image/jpeg;base64,${img?.base64String!}`)
     const imgData = await rawData.blob();
-    const res = await axios.post('https://flemme.cognitiveservices.azure.com/vision/v3.2/ocr?language=fr&detectOrientation=true&model-version=latest', imgData, {headers})
+    try {
+      const res = await axios.post('https://flemme.cognitiveservices.azure.com/vision/v3.2/ocr?language=fr&detectOrientation=true&model-version=latest', imgData, {headers})
     
-    console.log(res)
-
-    var strData = "";
-
-    for (const region of res.data.regions) {
-      for (const line of region.lines) {
-        for (const word of line.words) {
-          strData += `${word.text} `
+      console.log(res)
+  
+      var strData = "";
+  
+      for (const region of res.data.regions) {
+        for (const line of region.lines) {
+          for (const word of line.words) {
+            strData += `${word.text} `
+          }
+          strData += `\n`
         }
-        strData += `\n`
+        strData += `\n\n`
       }
-      strData += `\n\n`
+      setText(strData)
+      setLoading(false)
+    } catch {
+      setText(" ")
+      setLoading(false)
     }
-    setText(strData)
-    setLoading(false)
   }
 
   const save = async () => {
@@ -67,7 +72,7 @@ const Scan: React.FC = () => {
       text
     }
 
-    const res = await axios.post('http://localhost:3333/api/scan/create', data);
+    const res = await axios.post(`${process.env.REACT_APP_BACK_URL}/api/scan/create`, data);
     if (res.data.success) {
       addScan(res.data.post)
       history.push('/')

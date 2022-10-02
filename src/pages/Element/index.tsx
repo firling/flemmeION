@@ -22,7 +22,7 @@ const Element: React.FC = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get(`http://localhost:3333/api/scan/${id}`)
+      const res = await axios.get(`${process.env.REACT_APP_BACK_URL}/api/scan/${id}`)
       console.log(res)
       setScan(res.data.scan)
     }
@@ -30,7 +30,7 @@ const Element: React.FC = () => {
   }, [])
 
   const delElement = async () => {
-    const res = await axios.delete(`http://localhost:3333/api/scan/delete/${id}`)
+    const res = await axios.delete(`${process.env.REACT_APP_BACK_URL}/api/scan/delete/${id}`)
     if (res.data.success) {
         console.log(res.data)
         delScan(res.data.scan.id)
@@ -62,7 +62,7 @@ const Element: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-            <img className="scan-img" src={`http://localhost:3333/images/${scan?.image}`} />
+            <img className="scan-img" src={`${process.env.REACT_APP_BACK_URL}/images/${scan?.image}`} />
             <div className='scan-text-div'>
                 <IonText>{scan?.text.split('\n').map((elt, i) => <p key={i}>{elt}</p>)}</IonText>
             </div>

@@ -5,7 +5,7 @@ export function usePhotoGallery() {
       const photo = await Camera.getPhoto({
         resultType: CameraResultType.Base64,
         source: CameraSource.Camera,
-        quality: 100,
+        quality: 50,
       });
 
       return photo;
