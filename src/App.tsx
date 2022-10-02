@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -31,14 +31,19 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+import { GlobalProvider } from './context/GlobalState';
+
 import Home from './pages/Home';
 import Scan from './pages/Scan';
+import Element from './pages/Element';
 
 setupIonicReact();
+
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
+      <GlobalProvider>
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/home">
@@ -46,6 +51,9 @@ const App: React.FC = () => (
           </Route>
           <Route exact path="/scan">
             <Scan />
+          </Route>
+          <Route exact path="/element/:id">
+            <Element />
           </Route>
           <Route exact path="/">
             <Redirect to="/home" />
@@ -62,6 +70,7 @@ const App: React.FC = () => (
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
+      </GlobalProvider>
     </IonReactRouter>
   </IonApp>
 );

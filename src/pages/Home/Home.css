@@ -1,0 +1,8 @@
+.scan-element {
+    display: block;
+    max-height: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    cursor: pointer;
+}
